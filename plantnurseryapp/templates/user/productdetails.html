@@ -1,0 +1,57 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Details | Plant Nursery</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6">
+</head>
+
+<body class="product-details-page">
+
+    <h1 class="page-title">🌿 Product Details</h1>
+
+    <div class="product-box">
+
+        {% if data.image %}
+            <img
+                src="{{ data.image.url }}"
+                alt="{{ data.product_name }}"
+                class="product-image"
+            >
+        {% endif %}
+
+        <h2 class="product-name">
+            {{ data.product_name }}
+        </h2>
+
+        <p class="detail">
+            <strong>Price:</strong>
+            ₹{{ data.price }}
+        </p>
+
+        <div class="description">
+            <p class="detail">
+                <strong>Description:</strong><br>
+                {{ data.describtion }}
+            </p>
+        </div>
+
+        <p class="detail">
+            <strong>Available Quantity:</strong>
+            {{ data.quantity }}
+        </p>
+
+        <a href="{% url 'userviewproduct' %}" class="back-btn">
+            ← Back to Products
+        </a>
+
+    </div>
+
+</body>
+</html>

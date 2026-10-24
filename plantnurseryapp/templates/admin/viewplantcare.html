@@ -1,0 +1,525 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Plant Care | Plant Nursery</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body.plant-care-page {
+            min-height: 100vh;
+            padding-top: 70px;
+            font-family: Arial, sans-serif;
+            color: #24352a;
+            background-color: #e8f5e9;
+            background-image:
+                linear-gradient(
+                    rgba(240, 248, 240, 0.70),
+                    rgba(240, 248, 240, 0.70)
+                ),
+                url("{% static 'images/background.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* NAVBAR */
+        .plant-care-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 99999;
+            width: 100%;
+            height: 70px;
+            padding: 0 15px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: nowrap;
+
+            background: linear-gradient(
+                135deg,
+                #174d32,
+                #2e7d32
+            );
+
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.20);
+        }
+
+        .plant-care-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+            text-decoration: none;
+        }
+
+        .plant-care-logo {
+            font-size: 27px;
+            flex-shrink: 0;
+        }
+
+        /* PROJECT NAME - GOLD */
+        .plant-care-brand h1 {
+            margin: 0;
+            padding: 0;
+            color: #D4AF37 !important;
+            font-size: clamp(8px, 1.5vw, 19px);
+            font-weight: bold;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* DASHBOARD BUTTON - WHITE */
+        .plant-care-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+
+            background: #ffffff !important;
+            color: #174d32 !important;
+
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+
+        .plant-care-back:hover {
+            background: #eeeeee !important;
+            color: #174d32 !important;
+        }
+
+        /* MAIN CONTAINER */
+        .plant-care-container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        /* PAGE HEADING */
+        .plant-care-heading {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px 18px;
+            background: rgba(255, 255, 255, 0.93);
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .plant-care-eyebrow {
+            color: #2e7d32;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .plant-care-heading h2 {
+            color: #1b5e20;
+            font-size: 30px;
+            margin: 12px 0;
+        }
+
+        .plant-care-heading p {
+            color: #344b39;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        /* PLANT CARE GRID */
+        .plant-care-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        /* PLANT CARD */
+        .plant-care-card {
+            min-width: 0;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            border: 1px solid #dce9dc;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .plant-care-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.17);
+        }
+
+        /* PLANT IMAGE */
+        .plant-care-image {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+            background: #e8f5e9;
+        }
+
+        .plant-care-image-placeholder {
+            height: 210px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e8f5e9;
+            font-size: 65px;
+        }
+
+        /* CARD CONTENT */
+        .plant-care-content {
+            padding: 20px;
+        }
+
+        .plant-care-content h3 {
+            color: #1b5e20;
+            font-size: 21px;
+            margin: 0 0 16px;
+            overflow-wrap: anywhere;
+        }
+
+        /* CARE DETAILS */
+        .care-detail {
+            padding: 12px 0;
+            border-bottom: 1px solid #e5eee5;
+        }
+
+        .care-detail:last-child {
+            border-bottom: none;
+        }
+
+        .care-detail h4 {
+            margin: 0 0 7px;
+            color: #2e7d32;
+            font-size: 14px;
+        }
+
+        .care-detail p {
+            margin: 0;
+            color: #46564a;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        /* EMPTY MESSAGE */
+        .plant-care-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.97);
+            padding: 45px 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+        }
+
+        .plant-care-empty span {
+            font-size: 55px;
+        }
+
+        .plant-care-empty h3 {
+            color: #1b5e20;
+            font-size: 23px;
+            margin: 12px 0;
+        }
+
+        .plant-care-empty p {
+            color: #526357;
+            line-height: 1.7;
+        }
+
+        /* BACK TO HOME */
+        .plant-care-footer-button {
+            text-align: center;
+            margin: 35px 0;
+        }
+
+        .plant-care-footer-button a {
+            display: inline-block;
+            background: #174d32;
+            color: white;
+            padding: 13px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .plant-care-footer-button a:hover {
+            background: #2e7d32;
+            transform: translateY(-2px);
+        }
+
+        /* FOOTER */
+        .plant-care-footer {
+            background: #173f24;
+            color: white;
+            padding: 20px 12px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .plant-care-footer p {
+            margin: 0;
+        }
+
+        /* TABLET */
+        @media (max-width: 950px) {
+            .plant-care-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .plant-care-heading h2 {
+                font-size: 27px;
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            body.plant-care-page {
+                padding-top: 58px;
+                background-attachment: scroll;
+            }
+
+            .plant-care-header {
+                height: 58px;
+                padding: 0 8px;
+                gap: 6px;
+            }
+
+            .plant-care-brand {
+                gap: 5px;
+            }
+
+            .plant-care-logo {
+                font-size: 20px;
+            }
+
+            .plant-care-brand h1 {
+                font-size: clamp(7px, 2.1vw, 11px);
+                white-space: nowrap;
+            }
+
+            .plant-care-back {
+                padding: 10px 9px;
+                font-size: 10px;
+            }
+
+            .plant-care-container {
+                width: 94%;
+                margin: 22px auto;
+            }
+
+            .plant-care-heading {
+                padding: 21px 13px;
+                margin-bottom: 22px;
+            }
+
+            .plant-care-eyebrow {
+                font-size: 10px;
+            }
+
+            .plant-care-heading h2 {
+                font-size: 25px;
+            }
+
+            .plant-care-heading p {
+                font-size: 14px;
+            }
+
+            .plant-care-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .plant-care-image,
+            .plant-care-image-placeholder {
+                height: 220px;
+            }
+
+            .plant-care-content {
+                padding: 18px;
+            }
+
+            .plant-care-content h3 {
+                font-size: 20px;
+            }
+        }
+
+        /* SMALL MOBILE */
+        @media (max-width: 360px) {
+            .plant-care-header {
+                padding: 0 5px;
+                gap: 4px;
+            }
+
+            .plant-care-logo {
+                font-size: 16px;
+            }
+
+            .plant-care-brand h1 {
+                font-size: 7px;
+            }
+
+            .plant-care-back {
+                padding: 9px 6px;
+                font-size: 9px;
+            }
+
+            .plant-care-heading h2 {
+                font-size: 22px;
+            }
+
+            .plant-care-content {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body class="plant-care-page">
+
+    <!-- NAVBAR -->
+    <header class="plant-care-header">
+
+        <a href="{% url 'adminhome' %}" class="plant-care-brand">
+            <span class="plant-care-logo">🌿</span>
+            <h1>PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</h1>
+        </a>
+
+        <a href="{% url 'adminhome' %}" class="plant-care-back">
+            ← Dashboard
+        </a>
+
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="plant-care-container">
+
+        <section class="plant-care-heading">
+
+            <span class="plant-care-eyebrow">
+                GROW HEALTHY PLANTS
+            </span>
+
+            <h2>Plant Care Guide 🌱</h2>
+
+            <p>
+                Learn how to water, grow and care for your favourite plants.
+            </p>
+
+        </section>
+
+        <!-- PLANT CARE CARDS -->
+        <section class="plant-care-grid">
+
+            {% for x in data %}
+
+                <article class="plant-care-card">
+
+                    {% if x.image %}
+
+                        <img
+                            src="{{ x.image.url }}"
+                            alt="{{ x.plant_name }}"
+                            class="plant-care-image"
+                        >
+
+                    {% else %}
+
+                        <div class="plant-care-image-placeholder">
+                            🌱
+                        </div>
+
+                    {% endif %}
+
+                    <div class="plant-care-content">
+
+                        <h3>🌿 {{ x.plant_name }}</h3>
+
+                        <div class="care-detail">
+                            <h4>💧 Watering</h4>
+                            <p>{{ x.watering|default:"Not specified" }}</p>
+                        </div>
+
+                        <div class="care-detail">
+                            <h4>☀️ Sunlight</h4>
+                            <p>{{ x.sunlight|default:"Not specified" }}</p>
+                        </div>
+
+                        <div class="care-detail">
+                            <h4>🪴 Soil</h4>
+                            <p>{{ x.soil|default:"Not specified" }}</p>
+                        </div>
+
+                        <div class="care-detail">
+                            <h4>🌱 Fertilizer</h4>
+                            <p>{{ x.fertilizer|default:"Not specified" }}</p>
+                        </div>
+
+                        <div class="care-detail">
+                            <h4>🌼 Growing Tips</h4>
+                            <p>{{ x.growing_tips|default:"No growing tips available." }}</p>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <div class="plant-care-empty">
+                    <span>🌱</span>
+                    <h3>No Plant Care Tips Yet</h3>
+                    <p>Plant care tips will be available soon.</p>
+                </div>
+
+            {% endfor %}
+
+        </section>
+
+        <!-- BACK TO ADMIN HOME -->
+        <div class="plant-care-footer-button">
+            <a href="{% url 'adminhome' %}">
+                ← Back to Home
+            </a>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="plant-care-footer">
+        <p>© Plant Nursery and Gardening Management System</p>
+        <p>Growing Green, Living Better 🌱</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,564 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Plant Care Tips</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #edf5ec;
+            color: #284a32;
+            padding-top: 70px;
+        }
+
+        /* NAVBAR */
+        .care-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: #176b35;
+            z-index: 99999;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+        }
+
+        .navbar {
+            width: 100%;
+            height: 100%;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            flex-shrink: 0;
+        }
+
+        .brand-name {
+            color: #FFD700;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+            line-height: 1;
+        }
+
+        /* DASHBOARD BUTTON - WHITE */
+        .dashboard-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: #245332;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: 0.3s;
+        }
+
+        .dashboard-btn:hover {
+            background: #e8f3e8;
+            color: #176b35;
+        }
+
+        /* PAGE BACKGROUND */
+        .page-container {
+            min-height: calc(100vh - 70px);
+            padding: 22px 15px 35px;
+            background:
+                linear-gradient(
+                    rgba(225, 239, 225, 0.68),
+                    rgba(225, 239, 225, 0.78)
+                ),
+                url("{% static 'images/background.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* INTRO SECTION */
+        .intro-card {
+            max-width: 850px;
+            margin: 0 auto 18px;
+            padding: 25px 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .intro-label {
+            display: inline-block;
+            background: #dcefd9;
+            color: #477d52;
+            padding: 9px 15px;
+            border-radius: 25px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .intro-card h1 {
+            font-size: 27px;
+            color: #284a32;
+            margin-bottom: 12px;
+        }
+
+        .intro-card p {
+            font-size: 13px;
+            line-height: 1.8;
+            color: #758575;
+        }
+
+        /* FORM CARD */
+        .form-card {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 22px;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 16px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #edf0eb;
+        }
+
+        .form-heading-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #eaf5e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            flex-shrink: 0;
+        }
+
+        .form-heading h2 {
+            font-size: 19px;
+            color: #28663a;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 9px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #405744;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            display: block;
+            width: 100%;
+            padding: 13px 12px;
+            border: 1px solid #d8e5d5;
+            border-radius: 9px;
+            background: #fbfdf9;
+            color: #284a32;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            outline: none;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #4c9a5c;
+            box-shadow: 0 0 0 3px rgba(76, 154, 92, 0.12);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .form-group input[type="file"] {
+            padding: 9px;
+            border-style: dashed;
+            background: #f7faf5;
+            font-size: 12px;
+        }
+
+        .help-text {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #829082;
+            line-height: 1.5;
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .submit-btn,
+        .view-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 45px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn {
+            background: #218343;
+            color: #ffffff;
+            flex: 1;
+        }
+
+        .submit-btn:hover {
+            background: #176b35;
+        }
+
+        .view-btn {
+            background: #edf5e9;
+            color: #28663a;
+            border: 1px solid #d5e6d1;
+        }
+
+        .view-btn:hover {
+            background: #dcefd9;
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 18px 12px;
+            background: #176b35;
+            color: #ffffff;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* TABLET */
+        @media (max-width: 768px) {
+            .brand-name {
+                font-size: 10px;
+            }
+
+            .brand-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 20px;
+            }
+
+            .dashboard-btn {
+                padding: 11px 12px;
+                font-size: 12px;
+            }
+
+            .intro-card h1 {
+                font-size: 24px;
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 480px) {
+            body {
+                padding-top: 58px;
+            }
+
+            .care-header {
+                height: 58px;
+            }
+
+            .navbar {
+                padding: 0 8px;
+                gap: 5px;
+            }
+
+            .brand {
+                gap: 5px;
+            }
+
+            .brand-icon {
+                width: 31px;
+                height: 31px;
+                font-size: 19px;
+            }
+
+            .brand-name {
+                font-size: 7px;
+                letter-spacing: 0;
+                white-space: nowrap;
+            }
+
+            .dashboard-btn {
+                padding: 10px 8px;
+                font-size: 10px;
+                border-radius: 5px;
+            }
+
+            .page-container {
+                min-height: calc(100vh - 58px);
+                padding: 18px 10px 25px;
+                background-attachment: scroll;
+            }
+
+            .intro-card {
+                padding: 20px 12px;
+                border-radius: 13px;
+                margin-bottom: 16px;
+            }
+
+            .intro-label {
+                font-size: 9px;
+                padding: 8px 12px;
+                letter-spacing: 1.3px;
+            }
+
+            .intro-card h1 {
+                font-size: 22px;
+                line-height: 1.4;
+            }
+
+            .intro-card p {
+                font-size: 12px;
+            }
+
+            .form-card {
+                padding: 14px;
+                border-radius: 13px;
+            }
+
+            .form-heading {
+                gap: 10px;
+            }
+
+            .form-heading h2 {
+                font-size: 16px;
+            }
+
+            .form-heading-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 21px;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                font-size: 14px;
+                padding: 12px 10px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .submit-btn,
+            .view-btn {
+                width: 100%;
+                min-height: 44px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="care-header">
+        <nav class="navbar">
+
+            <a href="{% url 'adminhome' %}" class="brand">
+                <span class="brand-icon">🌿</span>
+                <span class="brand-name">
+                    PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+                </span>
+            </a>
+
+            <a href="{% url 'adminhome' %}" class="dashboard-btn">
+                ← Dashboard
+            </a>
+
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="page-container">
+
+        <!-- INTRO -->
+        <section class="intro-card">
+            <span class="intro-label">
+                PLANT NURSERY MANAGEMENT
+            </span>
+
+            <h1>🌱 Add Plant Care Tips</h1>
+
+            <p>
+                Add useful plant care information to help users grow and
+                maintain healthy plants.
+            </p>
+        </section>
+
+        <!-- FORM -->
+        <section class="form-card">
+
+            <div class="form-heading">
+                <div class="form-heading-icon">🪴</div>
+                <h2>Plant Care Information</h2>
+            </div>
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="plant_name">Plant Name</label>
+                    <input
+                        type="text"
+                        id="plant_name"
+                        name="plant_name"
+                        placeholder="Enter plant name"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Plant Image</label>
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/*"
+                        required>
+
+                    <span class="help-text">
+                        Select a clear image of the plant.
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="watering">Watering Requirements</label>
+                    <textarea
+                        id="watering"
+                        name="watering"
+                        placeholder="Explain how often the plant should be watered"
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="sunlight">Sunlight Requirements</label>
+                    <textarea
+                        id="sunlight"
+                        name="sunlight"
+                        placeholder="Explain the sunlight requirements"
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="soil">Soil Requirements</label>
+                    <textarea
+                        id="soil"
+                        name="soil"
+                        placeholder="Enter suitable soil information"
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="fertilizer">Fertilizer Requirements</label>
+                    <textarea
+                        id="fertilizer"
+                        name="fertilizer"
+                        placeholder="Enter fertilizer and feeding details"
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="growing_tips">Growing Tips</label>
+                    <textarea
+                        id="growing_tips"
+                        name="growing_tips"
+                        placeholder="Enter additional plant care tips"
+                        required></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="submit-btn">
+                        🌿 Save Plant Care Tips
+                    </button>
+
+                    <a href="/viewplantcare/" class="view-btn">
+                        View Plant Care Tips
+                    </a>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>
+            © 2026 Plant Nursery and Gardening Management System.
+            All rights reserved.
+        </p>
+    </footer>
+
+</body>
+</html>

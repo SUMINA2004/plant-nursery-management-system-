@@ -1,0 +1,626 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders | PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=8">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body.my-orders-page {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            position: relative;
+            isolation: isolate;
+            background: transparent;
+            color: #26352a;
+        }
+
+        /* BLURRED PLANT BACKGROUND */
+
+        body.my-orders-page::before {
+            content: "";
+            position: fixed;
+            inset: -8px;
+            z-index: -1;
+            background-image:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.30),
+                    rgba(0, 0, 0, 0.30)
+                ),
+                url("https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1920&q=80");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(4px);
+        }
+
+        /* NAVBAR */
+
+        .orders-navbar {
+            width: 100%;
+            min-height: 55px;
+            padding: 12px 2.5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            background: #174d2b;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .orders-brand {
+            color: white;
+            text-decoration: none;
+            font-size: clamp(10px, 1vw, 13px);
+            font-weight: bold;
+            white-space: nowrap;
+            flex-shrink: 1;
+            min-width: 0;
+        }
+
+        .orders-nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: clamp(8px, 1.4vw, 18px);
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .orders-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .orders-nav-links a:hover {
+            color: #c8f7a5;
+        }
+
+        /* MAIN CONTAINER */
+
+        .orders-container {
+            width: 92%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 35px 0;
+        }
+
+        /* HEADING */
+
+        .orders-heading {
+            text-align: center;
+            color: white;
+            padding: 20px 10px 35px;
+            text-shadow: 1px 2px 5px #222;
+        }
+
+        .orders-heading h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .orders-heading p {
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* ORDER CARD */
+
+        .my-order-card {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.20);
+            overflow-wrap: anywhere;
+        }
+
+        .my-order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #dce8dc;
+        }
+
+        .order-label {
+            color: #66806a;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+        }
+
+        .my-order-header h2 {
+            color: #245a32;
+            font-size: 23px;
+            margin-top: 7px;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 20px;
+            background: #e2f5e6;
+            color: #24723b;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* ORDER DATE */
+
+        .order-date {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #626d63;
+            font-size: 14px;
+            margin: 20px 0;
+        }
+
+        /* PRODUCTS */
+
+        .ordered-products {
+            background: #f5faf4;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .ordered-products h3 {
+            color: #245a32;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .ordered-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #dce8dc;
+        }
+
+        .ordered-item:last-child {
+            border-bottom: none;
+        }
+
+        .ordered-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .ordered-item-info strong {
+            color: #2c5133;
+            font-size: 15px;
+            overflow-wrap: anywhere;
+        }
+
+        .ordered-item-info span {
+            color: #6b766c;
+            font-size: 13px;
+        }
+
+        .ordered-item-prices {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 7px;
+            flex-shrink: 0;
+        }
+
+        .ordered-item-prices span {
+            color: #6b766c;
+            font-size: 13px;
+        }
+
+        .ordered-item-prices strong {
+            color: #16803a;
+            font-size: 16px;
+        }
+
+        .no-order-items {
+            color: #666;
+            font-size: 14px;
+            padding: 10px 0;
+        }
+
+        /* TOTAL */
+
+        .my-order-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 2px solid #dce8dc;
+        }
+
+        .my-order-total span {
+            color: #374d3a;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .my-order-total strong {
+            color: #16803a;
+            font-size: 24px;
+        }
+
+        /* EMPTY ORDERS */
+
+        .orders-empty {
+            background: rgba(255, 255, 255, 0.97);
+            text-align: center;
+            padding: 45px 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.20);
+        }
+
+        .empty-order-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .orders-empty h2 {
+            color: #245a32;
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .orders-empty p {
+            color: #626d63;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 23px;
+        }
+
+        .orders-button {
+            display: inline-block;
+            background: #245a32;
+            color: white;
+            padding: 12px 23px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .orders-button:hover {
+            background: #38834a;
+        }
+
+        /* BACK TO HOME */
+
+        .orders-footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .orders-home-link {
+            display: inline-block;
+            background: #174d2b;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20);
+            transition: 0.3s;
+        }
+
+        .orders-home-link:hover {
+            background: #26723c;
+            transform: translateY(-2px);
+        }
+
+        /* TABLET AND SMALL LAPTOP */
+
+        @media (max-width: 900px) {
+            .orders-navbar {
+                padding: 12px 2%;
+                gap: 8px;
+            }
+
+            .orders-brand {
+                font-size: 10px;
+            }
+
+            .orders-nav-links {
+                gap: 10px;
+            }
+
+            .orders-nav-links a {
+                font-size: 11px;
+            }
+
+            .orders-container {
+                width: 94%;
+            }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 650px) {
+            body.my-orders-page::before {
+                filter: blur(3px);
+            }
+
+            .orders-navbar {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 12px 8px;
+            }
+
+            .orders-brand {
+                display: block;
+                width: 100%;
+                text-align: center;
+                font-size: clamp(9px, 2.8vw, 12px);
+                white-space: normal;
+                line-height: 1.4;
+            }
+
+            .orders-nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+
+            .orders-nav-links a {
+                font-size: 12px;
+            }
+
+            .orders-container {
+                width: 94%;
+                padding: 25px 0;
+            }
+
+            .orders-heading {
+                padding: 15px 5px 25px;
+            }
+
+            .orders-heading h1 {
+                font-size: 30px;
+            }
+
+            .orders-heading p {
+                font-size: 14px;
+            }
+
+            .my-order-card {
+                padding: 17px;
+                margin-bottom: 20px;
+            }
+
+            .my-order-header h2 {
+                font-size: 20px;
+            }
+
+            .order-status {
+                padding: 7px 10px;
+                font-size: 11px;
+            }
+
+            .ordered-products {
+                padding: 13px;
+            }
+
+            .ordered-item {
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .ordered-item-info strong {
+                font-size: 14px;
+            }
+
+            .ordered-item-prices span {
+                font-size: 12px;
+            }
+
+            .ordered-item-prices strong {
+                font-size: 14px;
+            }
+
+            .my-order-total strong {
+                font-size: 21px;
+            }
+
+            .orders-empty {
+                padding: 35px 17px;
+            }
+
+            .orders-empty h2 {
+                font-size: 22px;
+            }
+        }
+
+        /* VERY SMALL MOBILE */
+
+        @media (max-width: 350px) {
+            .orders-brand {
+                font-size: 9px;
+            }
+
+            .orders-nav-links {
+                gap: 10px;
+            }
+
+            .orders-nav-links a {
+                font-size: 11px;
+            }
+
+            .my-order-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .ordered-item {
+                flex-direction: column;
+            }
+
+            .ordered-item-prices {
+                align-items: flex-start;
+            }
+
+            .my-order-total {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body class="my-orders-page">
+
+    <!-- STICKY NAVBAR -->
+
+    <nav class="orders-navbar">
+
+        <a href="{% url 'userhome' %}" class="orders-brand">
+            🌿 PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+        </a>
+
+        <div class="orders-nav-links">
+            <a href="{% url 'userhome' %}">Home</a>
+            <a href="{% url 'userviewproduct' %}">Products</a>
+            <a href="{% url 'cart' %}">My Cart</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+
+    </nav>
+
+    <!-- ORDERS CONTENT -->
+
+    <main class="orders-container">
+
+        <header class="orders-heading">
+            <h1>My Orders</h1>
+            <p>
+                View and track your Plant Nursery orders in one place.
+            </p>
+        </header>
+
+        {% for order in orders %}
+
+            <section class="my-order-card">
+
+                <div class="my-order-header">
+                    <div>
+                        <span class="order-label">ORDER NUMBER</span>
+                        <h2>Order #{{ order.id }}</h2>
+                    </div>
+
+                    <span class="order-status">
+                        {{ order.status }}
+                    </span>
+                </div>
+
+                <div class="order-date">
+                    <span>📅</span>
+                    <span>
+                        Ordered on
+                        {{ order.created_at|date:"d-m-Y h:i A" }}
+                    </span>
+                </div>
+
+                <div class="ordered-products">
+
+                    <h3>🌱 Products</h3>
+
+                    {% for item in order.items.all %}
+
+                        <div class="ordered-item">
+
+                            <div class="ordered-item-info">
+                                <strong>{{ item.product_name }}</strong>
+                                <span>Quantity: {{ item.quantity }}</span>
+                            </div>
+
+                            <div class="ordered-item-prices">
+                                <span>₹{{ item.price }} each</span>
+                                <strong>₹{{ item.total_price }}</strong>
+                            </div>
+
+                        </div>
+
+                    {% empty %}
+
+                        <p class="no-order-items">
+                            No order items found.
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="my-order-total">
+                    <span>Total Amount</span>
+                    <strong>₹{{ order.total_amount }}</strong>
+                </div>
+
+            </section>
+
+        {% empty %}
+
+            <section class="orders-empty">
+
+                <div class="empty-order-icon">🪴</div>
+
+                <h2>No Orders Yet</h2>
+
+                <p>
+                    You haven't placed any orders yet.
+                    Your orders will appear here after checkout.
+                </p>
+
+                <a href="{% url 'userviewproduct' %}" class="orders-button">
+                    Browse Plants
+                </a>
+
+            </section>
+
+        {% endfor %}
+
+        <!-- BACK TO HOME BUTTON -->
+
+        <div class="orders-footer">
+            <a href="{% url 'userhome' %}" class="orders-home-link">
+                ← Back to Home
+            </a>
+        </div>
+
+    </main>
+
+</body>
+</html>

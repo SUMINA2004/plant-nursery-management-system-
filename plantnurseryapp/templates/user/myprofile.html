@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | Plant Nursery</title>
+
+    {% load static %}
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}?v=10">
+</head>
+
+<body class="my-profile-page">
+
+    <div class="profile-box">
+
+        <div class="profile-header">
+            <h2>My Profile</h2>
+            <p>Manage your profile information</p>
+        </div>
+
+        <div class="profile-image-section">
+
+            {% if user.image %}
+                <img src="{{ user.image.url }}"
+                     class="profile-img"
+                     alt="Profile Image">
+            {% else %}
+                <div class="no-image">
+                    No Image
+                </div>
+            {% endif %}
+
+        </div>
+
+        <form method="POST"
+              enctype="multipart/form-data"
+              class="profile-form">
+
+            {% csrf_token %}
+
+            <label for="profile-image">
+                Choose Profile Image
+            </label>
+
+            <input type="file"
+                   id="profile-image"
+                   name="image"
+                   accept="image/*"
+                   required>
+
+            <button type="submit" class="upload-btn">
+                Upload Image
+            </button>
+
+        </form>
+
+        <div class="user-details">
+
+            <div class="detail-item">
+                <span>Name</span>
+                <p>{{ user.name }}</p>
+            </div>
+
+            <div class="detail-item">
+                <span>Email</span>
+                <p>{{ user.email }}</p>
+            </div>
+
+            <div class="detail-item">
+                <span>Address</span>
+                <p>{{ user.address|default:"Not provided" }}</p>
+            </div>
+
+        </div>
+
+        <a href="{% url 'userhome' %}" class="home-link">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</body>
+</html>

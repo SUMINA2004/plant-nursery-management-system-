@@ -1,0 +1,531 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Plant Nursery and Gardening Management System | Admin Home</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=23">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body.admin-home {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #f4f7f1;
+            color: #243b2b;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        body.admin-home .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            width: 100%;
+            min-height: 62px;
+            padding: 12px 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #174d32;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+        }
+
+        /* GOLDEN PROJECT TITLE */
+        body.admin-home .navbar .logo {
+            flex: 1 1 auto;
+            min-width: 0;
+            margin: 0;
+            padding: 0;
+            color: #d8bd70;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: clip;
+        }
+
+        /* ADMIN ACTIONS */
+        body.admin-home .admin-actions {
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-left: auto;
+        }
+
+        body.admin-home .admin-name {
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        body.admin-home .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 15px;
+            background: #ffffff;
+            color: #174d32;
+            border: none;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        body.admin-home .logout-btn:hover {
+            background: #e4f2e8;
+            transform: translateY(-1px);
+        }
+
+        /* MAIN DASHBOARD */
+        body.admin-home .main {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 45px 25px;
+            flex: 1;
+        }
+
+        /* WELCOME SECTION */
+        body.admin-home .welcome {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        body.admin-home .tagline {
+            display: inline-block;
+            margin-bottom: 12px;
+            color: #56804d;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        body.admin-home .welcome h1 {
+            margin: 0 0 12px;
+            color: #174d32;
+            font-size: clamp(27px, 4vw, 40px);
+            line-height: 1.2;
+        }
+
+        body.admin-home .welcome p {
+            margin: 0;
+            color: #68776a;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* DASHBOARD CARDS */
+        body.admin-home .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+            width: 100%;
+        }
+
+        body.admin-home .card {
+            min-width: 0;
+            padding: 27px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            background: #ffffff;
+            border: 1px solid #e1e9dd;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(23, 77, 50, 0.07);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        body.admin-home .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(23, 77, 50, 0.13);
+        }
+
+        body.admin-home .card .icon {
+            width: 54px;
+            height: 54px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #edf5e8;
+            border-radius: 13px;
+            font-size: 27px;
+        }
+
+        body.admin-home .card h2 {
+            margin: 0 0 10px;
+            color: #174d32;
+            font-size: 19px;
+            line-height: 1.4;
+        }
+
+        body.admin-home .card p {
+            flex: 1;
+            margin: 0 0 22px;
+            color: #68776a;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        body.admin-home .card .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 42px;
+            padding: 10px 13px;
+            background: #174d32;
+            color: #ffffff;
+            border-radius: 7px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        body.admin-home .card .btn:hover {
+            background: #246a43;
+        }
+
+        /* FOOTER */
+        body.admin-home footer {
+            width: 100%;
+            margin-top: auto;
+            padding: 17px 12px;
+            background: #174d32;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        body.admin-home footer p {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* TABLET */
+        @media (max-width: 900px) {
+            body.admin-home .main {
+                padding: 35px 20px;
+            }
+
+            body.admin-home .cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 18px;
+            }
+
+            body.admin-home .navbar {
+                padding: 12px;
+                gap: 8px;
+            }
+
+            body.admin-home .navbar .logo {
+                font-size: clamp(9px, 1.6vw, 13px);
+                letter-spacing: 0;
+            }
+
+            body.admin-home .admin-actions {
+                gap: 8px;
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            body.admin-home .navbar {
+                min-height: 54px;
+                padding: 10px 8px;
+                gap: 5px;
+            }
+
+            body.admin-home .navbar .logo {
+                font-size: clamp(7px, 2vw, 11px);
+                line-height: 1.2;
+                letter-spacing: 0;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            body.admin-home .admin-actions {
+                gap: 6px;
+            }
+
+            body.admin-home .admin-name {
+                font-size: 10px;
+            }
+
+            body.admin-home .logout-btn {
+                padding: 8px 9px;
+                font-size: 10px;
+            }
+
+            body.admin-home .main {
+                padding: 30px 13px;
+            }
+
+            body.admin-home .welcome {
+                margin-bottom: 25px;
+            }
+
+            body.admin-home .tagline {
+                font-size: 10px;
+                letter-spacing: 1.3px;
+            }
+
+            body.admin-home .welcome h1 {
+                font-size: 27px;
+            }
+
+            body.admin-home .welcome p {
+                font-size: 13px;
+            }
+
+            body.admin-home .cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            body.admin-home .card {
+                padding: 18px 13px;
+                border-radius: 12px;
+            }
+
+            body.admin-home .card .icon {
+                width: 43px;
+                height: 43px;
+                font-size: 23px;
+                margin-bottom: 12px;
+            }
+
+            body.admin-home .card h2 {
+                font-size: 15px;
+            }
+
+            body.admin-home .card p {
+                font-size: 12px;
+                line-height: 1.6;
+                margin-bottom: 16px;
+            }
+
+            body.admin-home .card .btn {
+                min-height: 38px;
+                padding: 9px 5px;
+                font-size: 11px;
+            }
+
+            body.admin-home footer {
+                padding: 12px 7px;
+            }
+
+            body.admin-home footer p {
+                font-size: 9px;
+                line-height: 1.5;
+            }
+        }
+
+        /* VERY SMALL PHONES */
+        @media (max-width: 360px) {
+            body.admin-home .navbar {
+                padding: 9px 5px;
+                gap: 4px;
+            }
+
+            body.admin-home .navbar .logo {
+                font-size: 7px;
+            }
+
+            body.admin-home .admin-actions {
+                gap: 4px;
+            }
+
+            body.admin-home .admin-name {
+                font-size: 9px;
+            }
+
+            body.admin-home .logout-btn {
+                padding: 7px 6px;
+                font-size: 9px;
+            }
+
+            body.admin-home .cards {
+                gap: 9px;
+            }
+
+            body.admin-home .card {
+                padding: 14px 10px;
+            }
+
+            body.admin-home .card h2 {
+                font-size: 14px;
+            }
+
+            body.admin-home .card p {
+                font-size: 11px;
+            }
+
+            body.admin-home .card .btn {
+                font-size: 10px;
+            }
+
+            body.admin-home footer p {
+                font-size: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body class="admin-home">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            🌿 PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+        </div>
+
+        <div class="admin-actions">
+            <div class="admin-name">👤 Administrator</div>
+            <a href="/logout/" class="logout-btn">Logout</a>
+        </div>
+
+    </nav>
+
+    <!-- MAIN SECTION -->
+    <main class="main">
+
+        <div class="welcome">
+            <span class="tagline">PLANT NURSERY MANAGEMENT</span>
+            <h1>🌱 Welcome Admin</h1>
+            <p>Manage your Plant Nursery &amp; Gardening Management System</p>
+        </div>
+
+        <!-- DASHBOARD CARDS -->
+        <div class="cards">
+
+            <!-- VIEW PRODUCTS -->
+            <div class="card">
+                <div class="icon">🪴</div>
+                <h2>View Products</h2>
+                <p>
+                    View and manage all plants and products
+                    available in your nursery.
+                </p>
+                <a href="/viewproducts/" class="btn">View Products →</a>
+            </div>
+
+            <!-- VIEW USERS -->
+            <div class="card">
+                <div class="icon">👥</div>
+                <h2>View Users</h2>
+                <p>
+                    View the registered users of your
+                    plant nursery system.
+                </p>
+                <a href="/usersview/" class="btn">View Users →</a>
+            </div>
+
+            <!-- ADD PRODUCT -->
+            <div class="card">
+                <div class="icon">🌱</div>
+                <h2>Add Product</h2>
+                <p>
+                    Add new plants and gardening products
+                    to your nursery.
+                </p>
+                <a href="/addproduct/" class="btn">Add Product →</a>
+            </div>
+
+            <!-- MANAGE CUSTOMER ORDERS -->
+            <div class="card">
+                <div class="icon">📦</div>
+                <h2>Manage Customer Orders</h2>
+                <p>
+                    View customer orders and manage
+                    the orders placed in your nursery.
+                </p>
+                <a href="{% url 'admin_orders' %}" class="btn">
+                    Manage Orders →
+                </a>
+            </div>
+
+            <!-- VIEW CUSTOMER FEEDBACK -->
+            <div class="card">
+                <div class="icon">💬</div>
+                <h2>View Customer Feedback</h2>
+                <p>
+                    Read customer feedback and
+                    understand their experience.
+                </p>
+                <a href="{% url 'view_feedback' %}" class="btn">
+                    View Feedback →
+                </a>
+            </div>
+
+            <!-- ADD PLANT CARE TIPS -->
+            <div class="card">
+                <div class="icon">🌿</div>
+                <h2>Add Plant Care Tips</h2>
+                <p>
+                    Add plant growing instructions,
+                    watering methods, sunlight requirements
+                    and gardening tips for users.
+                </p>
+                <a href="/addplantcare/" class="btn">
+                    Add Plant Tips →
+                </a>
+            </div>
+
+            <!-- MANAGE PLANT CARE TIPS -->
+            <div class="card">
+                <div class="icon">🪴</div>
+                <h2>Manage Plant Care Tips</h2>
+                <p>
+                    View, edit and delete plant care
+                    information added to your website.
+                </p>
+                <a href="/viewplantcare/" class="btn">
+                    Manage Plant Tips →
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>
+            © 2026 PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+            | Admin Dashboard 🌿
+        </p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Users | PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="users-page">
+
+    <div class="users-container">
+
+        <div class="page-header">
+            <h1>🌿 Registered Users</h1>
+            <p>
+                PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+                - User Details
+            </p>
+        </div>
+
+        <div class="table-container">
+
+            <table class="users-table">
+
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for x in userdata %}
+
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ x.name }}</td>
+                        <td>{{ x.address }}</td>
+                        <td>{{ x.email }}</td>
+
+                        <td>
+                            <form
+                                method="POST"
+                                action="{% url 'delete_user' %}"
+                                onsubmit="return confirm('Are you sure you want to delete this user?');"
+                            >
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="{{ x.id }}"
+                                >
+
+                                <button type="submit" class="delete-btn">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="5">No users registered yet.</td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="page-footer">
+            <a href="/adminhome/" class="back-btn">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

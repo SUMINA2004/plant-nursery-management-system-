@@ -1,0 +1,228 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Cart | PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</title>
+
+<style>
+    body.responsive-cart-page {
+        margin: 0;
+        min-height: 100vh;
+        position: relative;
+        isolation: isolate;
+        background: transparent;
+        padding: 30px 15px;
+        box-sizing: border-box;
+    }
+
+    /* BLURRED PLANT BACKGROUND */
+
+    body.responsive-cart-page::before {
+        content: "";
+        position: fixed;
+        inset: -8px;
+        z-index: -1;
+
+        background-image:
+            linear-gradient(
+                rgba(0, 0, 0, 0.30),
+                rgba(0, 0, 0, 0.30)
+            ),
+            url("https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1920&q=80");
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        filter: blur(4px);
+    }
+
+    /* KEEP CART CONTENT CLEAR */
+
+    .cart-container {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 1250px;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 600px) {
+        body.responsive-cart-page {
+            padding: 15px 10px;
+        }
+
+        body.responsive-cart-page::before {
+            filter: blur(3px);
+        }
+
+        .cart-container {
+            max-width: 100%;
+        }
+    }
+</style>
+</head>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="responsive-cart-page">
+
+    <div class="cart-container">
+
+        <div class="cart-header">
+            <h1>🛒 My Shopping Cart</h1>
+            <p>Review your plants before checkout.</p>
+        </div>
+
+        {% if items %}
+
+            <div class="cart-table-wrap">
+
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Date &amp; Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in items %}
+                            <tr>
+                                <td data-label="Image">
+                                    {% if item.product.image %}
+                                        <img
+                                            src="{{ item.product.image.url }}"
+                                            class="cart-product-image"
+                                            alt="{{ item.product.product_name }}"
+                                        >
+                                    {% else %}
+                                        <span class="cart-no-image">No image</span>
+                                    {% endif %}
+                                </td>
+
+                                <td data-label="Product" class="cart-product-name">
+                                    {{ item.product.product_name }}
+                                </td>
+
+                                <td data-label="Price">
+                                    ₹{{ item.price|floatformat:2 }}
+                                </td>
+
+                                <td data-label="Quantity">
+                                    <form method="post" action="{% url 'cart' %}"
+                                          class="cart-quantity-form">
+                                        {% csrf_token %}
+
+                                        <input
+                                            type="hidden"
+                                            name="cart_id"
+                                            value="{{ item.id }}"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="action"
+                                            value="update"
+                                        >
+
+                                        <input
+                                            type="number"
+                                            name="quantity"
+                                            value="{{ item.quantity }}"
+                                            min="1"
+                                            required
+                                            aria-label="Quantity for {{ item.product.product_name }}"
+                                        >
+
+                                        <button class="cart-update-btn" type="submit">
+                                            Update
+                                        </button>
+                                    </form>
+                                </td>
+
+                                <td data-label="Total" class="cart-item-total">
+                                    ₹{{ item.total_price|floatformat:2 }}
+                                </td>
+
+                                <td data-label="Date & Time" class="cart-date">
+                                    {{ item.created_at|date:"d-m-Y" }}<br>
+                                    {{ item.created_at|time:"h:i A" }}
+                                </td>
+
+                                <td data-label="Action">
+                                    <form method="post" action="{% url 'cart' %}">
+                                        {% csrf_token %}
+
+                                        <input
+                                            type="hidden"
+                                            name="cart_id"
+                                            value="{{ item.id }}"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="action"
+                                            value="remove"
+                                        >
+
+                                        <button class="cart-remove-btn" type="submit">
+                                            Remove
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="cart-summary">
+                <span>Grand Total</span>
+                <strong>₹{{ grand_total|floatformat:2 }}</strong>
+            </div>
+
+            <div class="cart-navigation">
+                <a href="/userviewproduct/" class="cart-continue-btn">
+                    ← Continue Shopping
+                </a>
+
+                <a href="{% url 'checkout' %}" class="cart-checkout-btn">
+                    Proceed to Payment →
+                </a>
+            </div>
+
+        {% else %}
+
+            <div class="cart-empty">
+                <div class="cart-empty-icon">🪴</div>
+                <h2>Your cart is empty!</h2>
+                <p>Please add some plants to your cart.</p>
+
+                <a href="/userviewproduct/" class="cart-continue-btn">
+                    Browse Plants
+                </a>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

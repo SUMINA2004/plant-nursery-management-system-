@@ -1,0 +1,123 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Feedback | Plant Nursery</title>
+    <style>
+    body.customer-feedback-page {
+        margin: 0;
+        min-height: 100vh;
+        position: relative;
+        isolation: isolate;
+        background: transparent;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 25px 15px;
+        box-sizing: border-box;
+    }
+
+    /* Blurred background image only */
+    body.customer-feedback-page::before {
+        content: "";
+        position: fixed;
+        inset: -8px;
+        z-index: -1;
+
+        background-image:
+            linear-gradient(
+                rgba(0, 0, 0, 0.30),
+                rgba(0, 0, 0, 0.30)
+            ),
+            url("https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1920&q=80");
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        filter: blur(4px);
+    }
+
+    /* Keep feedback form clear */
+    .feedback-form-container {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 500px;
+        box-sizing: border-box;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 600px) {
+        body.customer-feedback-page {
+            padding: 18px 12px;
+        }
+
+        body.customer-feedback-page::before {
+            filter: blur(3px);
+        }
+    }
+</style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=8">
+</head>
+
+<body class="customer-feedback-page">
+
+    <main class="feedback-form-container">
+
+        <div class="feedback-form-icon">🌿</div>
+
+        <h2>Share Your Feedback</h2>
+
+        <p class="feedback-form-description">
+            Tell us about your PLANT NURSERY AND GARDENING
+            MANAGEMENT SYSTEM experience.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="feedback-form-group">
+                <label for="rating">Rate Our Service</label>
+
+                <select name="rating" id="rating" required>
+                    <option value="5" selected>⭐⭐⭐⭐⭐ - Excellent</option>
+                    <option value="4">⭐⭐⭐⭐ - Very Good</option>
+                    <option value="3">⭐⭐⭐ - Good</option>
+                    <option value="2">⭐⭐ - Fair</option>
+                    <option value="1">⭐ - Poor</option>
+                </select>
+            </div>
+
+            <div class="feedback-form-group">
+                <label for="message">Your Feedback</label>
+
+                <textarea
+                    name="message"
+                    id="message"
+                    placeholder="Write your feedback here..."
+                    required
+                    maxlength="2000"
+                    rows="6"
+                ></textarea>
+            </div>
+
+            <button type="submit" class="feedback-submit-btn">
+                Submit Feedback
+            </button>
+
+            <a href="{% url 'userhome' %}" class="feedback-home-btn">
+                ← Back to Home
+            </a>
+        </form>
+
+    </main>
+
+</body>
+</html>

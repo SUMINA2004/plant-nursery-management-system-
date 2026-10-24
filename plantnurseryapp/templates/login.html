@@ -1,0 +1,93 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="login-page">
+
+    <div class="login-box">
+
+        <div class="login-logo">🌿</div>
+
+        <h1>Welcome Back</h1>
+
+        <p class="login-subtitle">
+            Login to PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+        </p>
+
+        <!-- Success Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="login-message success-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Error Message -->
+        {% if error %}
+            <div class="login-message error-message">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form action="{% url 'LOGIN' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="login-form-group">
+                <label for="email">📧 Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="EMAIL"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="login-form-group">
+                <label for="password">🔒 Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="PASSWORD"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-btn">
+                🔐 Login
+            </button>
+
+        </form>
+
+        <!-- Sign Up Link -->
+        <div class="login-signup">
+            Don't have an account?
+            <a href="{% url 'SIGUP' %}">Sign Up</a>
+        </div>
+
+        <!-- Home Link -->
+        <div class="login-home">
+            <a href="/">← Back to Home</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

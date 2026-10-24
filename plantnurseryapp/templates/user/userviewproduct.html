@@ -1,0 +1,510 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Our Nursery Products</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=25">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #263528;
+            background-image:
+                linear-gradient(
+                    rgba(242, 249, 239, 0.82),
+                    rgba(242, 249, 239, 0.88)
+                ),
+                url("https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1920&q=80");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+        .products-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px 2%;
+            background: #174d2a;
+            color: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* PROJECT NAME - ONE LINE */
+        .products-logo {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .products-logo h3 {
+            margin: 0;
+            padding: 0;
+            font-size: clamp(8px, 1.45vw, 19px);
+            font-weight: bold;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: white;
+        }
+
+        /* NAVIGATION LINKS */
+        .products-nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: nowrap;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+
+        .products-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 9px 8px;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .products-nav-links a:hover {
+            background: #2d7040;
+        }
+
+        /* PAGE HEADER */
+        .products-page-header {
+            text-align: center;
+            padding: 45px 15px 25px;
+        }
+
+        .products-eyebrow {
+            font-size: 13px;
+            margin: 0 0 12px;
+            color: #245b31;
+            font-weight: bold;
+        }
+
+        .products-page-header h1 {
+            font-size: 38px;
+            font-weight: bold;
+            line-height: 1.3;
+            margin: 0 0 15px;
+            color: #174d2a;
+            text-shadow: 0 1px 2px white;
+        }
+
+        .products-page-header p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* MESSAGES */
+        .products-message {
+            width: 90%;
+            max-width: 1100px;
+            margin: 10px auto;
+            padding: 12px 15px;
+            border-radius: 7px;
+            background: #fff3cd;
+            color: #664d03;
+            text-align: center;
+        }
+
+        /* PRODUCT GRID */
+        .products-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 25px 50px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 25px;
+        }
+
+        /* PRODUCT CARD */
+        .product-card {
+            min-width: 0;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(40, 90, 45, 0.12);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 9px 24px rgba(0, 0, 0, 0.17);
+        }
+
+        .product-card img {
+            display: block;
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+        }
+
+        .product-card-content {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-card h2 {
+            font-size: 21px;
+            color: #234b2a;
+            margin: 0 0 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .product-price {
+            color: #24723b;
+            font-size: 19px;
+            font-weight: bold;
+            margin: 0 0 12px;
+        }
+
+        .product-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            overflow-wrap: anywhere;
+        }
+
+        .product-stock {
+            font-size: 14px;
+            margin: 5px 0 15px;
+            color: #384d38;
+        }
+
+        /* BUTTONS */
+        .product-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 10px;
+        }
+
+        .product-buttons a,
+        .product-buttons button {
+            flex: 1 1 120px;
+            min-width: 0;
+            border: none;
+            border-radius: 5px;
+            padding: 11px 12px;
+            text-align: center;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .view-details-btn {
+            background: #e2f0e3;
+            color: #174d2a;
+        }
+
+        .add-cart-btn {
+            background: #24723b;
+            color: white;
+        }
+
+        .view-details-btn:hover {
+            background: #cce4ce;
+        }
+
+        .add-cart-btn:hover {
+            background: #185a2b;
+        }
+
+        /* EMPTY PRODUCTS */
+        .empty-products {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px 10px;
+            font-size: 17px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        /* TABLETS */
+        @media (max-width: 1000px) {
+            .products-navbar {
+                gap: 6px;
+                padding: 14px 1%;
+            }
+
+            .products-logo h3 {
+                font-size: clamp(8px, 1.35vw, 13px);
+            }
+
+            .products-nav-links {
+                gap: 1px;
+            }
+
+            .products-nav-links a {
+                font-size: 11px;
+                padding: 8px 5px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            body {
+                background-attachment: scroll;
+                background-position: center;
+            }
+
+            .products-navbar {
+                padding: 12px 7px;
+                gap: 5px;
+                flex-direction: row;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+
+            .products-logo {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .products-logo h3 {
+                font-size: clamp(6px, 1.85vw, 10px);
+                line-height: 1.2;
+                white-space: nowrap;
+            }
+
+            .products-nav-links {
+                flex: 0 0 auto;
+                flex-wrap: nowrap;
+                justify-content: flex-end;
+                gap: 1px;
+            }
+
+            .products-nav-links a {
+                font-size: 9px;
+                padding: 7px 4px;
+            }
+
+            .products-page-header {
+                padding: 30px 15px 15px;
+            }
+
+            .products-page-header h1 {
+                font-size: 27px;
+                line-height: 1.4;
+            }
+
+            .products-page-header p {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+            .products-eyebrow {
+                font-size: 11px;
+            }
+
+            .products-container {
+                padding: 15px;
+            }
+
+            .products-grid {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 20px;
+            }
+
+            .product-card img {
+                height: 220px;
+            }
+
+            .product-card-content {
+                padding: 15px;
+            }
+
+            .product-card h2 {
+                font-size: 20px;
+            }
+
+            .product-buttons {
+                flex-direction: column;
+            }
+
+            .product-buttons a,
+            .product-buttons button {
+                width: 100%;
+                flex: auto;
+            }
+        }
+
+        /* VERY SMALL MOBILE */
+        @media (max-width: 360px) {
+            .products-navbar {
+                padding: 10px 4px;
+                gap: 3px;
+            }
+
+            .products-logo h3 {
+                font-size: 6px;
+            }
+
+            .products-nav-links a {
+                font-size: 8px;
+                padding: 7px 3px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="products-navbar">
+
+        <div class="products-logo">
+            <h3>🌿 PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</h3>
+        </div>
+
+        <div class="products-nav-links">
+            <a href="{% url 'userhome' %}">Home</a>
+            <a href="{% url 'userviewproduct' %}">Products</a>
+            <a href="{% url 'cart' %}">My Cart</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <section class="products-page-header">
+        <p class="products-eyebrow">GROW GREEN, LIVE GREEN</p>
+        <h1>Our Nursery Products</h1>
+        <p>Find beautiful plants to bring nature into your home.</p>
+    </section>
+
+    <!-- ERROR MESSAGE -->
+    {% if error %}
+        <div class="products-message">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <!-- DJANGO MESSAGES -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="products-message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- PRODUCTS -->
+    <main class="products-container">
+        <div class="products-grid">
+
+            {% for x in data %}
+
+                <div class="product-card">
+
+                    {% if x.image %}
+                        <img src="{{ x.image.url }}" alt="{{ x.product_name }}">
+                    {% else %}
+                        <img
+                            src="{% static 'images/plant-placeholder.jpg' %}"
+                            alt="Plant image">
+                    {% endif %}
+
+                    <div class="product-card-content">
+
+                        <h2>{{ x.product_name }}</h2>
+
+                        <p class="product-price">
+                            ₹{{ x.price }}
+                        </p>
+
+                        <p class="product-description">
+                            {{ x.describtion|truncatewords:20 }}
+                        </p>
+
+                        <p class="product-stock">
+                            Available quantity: {{ x.quantity }}
+                        </p>
+
+                        <div class="product-buttons">
+
+                            <a class="view-details-btn"
+                               href="{% url 'productdetails' %}?id={{ x.id }}">
+                                View Details
+                            </a>
+
+                            <form method="GET"
+                                  action="{% url 'add_to_cart' %}"
+                                  style="display: contents;">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="{{ x.id }}">
+
+                                <input type="hidden"
+                                       name="number"
+                                       value="1">
+
+                                <button type="submit" class="add-cart-btn">
+                                    Add to Cart
+                                </button>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+            {% empty %}
+
+                <div class="empty-products">
+                    <p>No plants are available right now.</p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </main>
+
+</body>
+</html>

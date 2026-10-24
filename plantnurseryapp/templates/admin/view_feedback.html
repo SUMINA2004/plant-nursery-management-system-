@@ -1,0 +1,505 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Feedback | Plant Nursery</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            color: #263b2c;
+
+            /* Plant Background Image */
+            background:
+                linear-gradient(
+                    rgba(240, 248, 238, 0.78),
+                    rgba(240, 248, 238, 0.86)
+                ),
+                url("{% static 'images/background.jpg' %}");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* STICKY NAVBAR */
+        .navbar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+
+            background: #174d32;
+            padding: 15px 4%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            color: #d8bd70;
+            font-size: clamp(14px, 1.7vw, 22px);
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .nav-btn {
+            background: #d8bd70;
+            color: #174d32;
+            text-decoration: none;
+
+            padding: 10px 20px;
+            border-radius: 6px;
+
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+            flex-shrink: 0;
+
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: white;
+            color: #174d32;
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            width: 92%;
+            max-width: 1150px;
+            margin: 35px auto;
+            min-height: 65vh;
+        }
+
+        .page-title {
+            text-align: center;
+            color: #174d32;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 1px 2px white;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #344b39;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        /* TOTAL FEEDBACK */
+        .count-box {
+            background: rgba(255, 255, 255, 0.94);
+            border-left: 5px solid #d8bd70;
+            padding: 18px 22px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+            font-size: 17px;
+        }
+
+        .count-number {
+            color: #174d32;
+            font-size: 25px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        /* FEEDBACK GRID */
+        .feedback-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(280px, 1fr)
+            );
+            gap: 22px;
+        }
+
+        /* FEEDBACK CARD */
+        .feedback-card {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 12px;
+            padding: 23px;
+
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+            border-top: 5px solid #174d32;
+
+            overflow-wrap: anywhere;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feedback-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+        }
+
+        /* CUSTOMER DETAILS */
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 18px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: 50%;
+
+            background: #174d32;
+            color: #d8bd70;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .customer-name {
+            color: #174d32;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .customer-email {
+            color: #68776b;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .customer-label {
+            display: inline-block;
+            margin-top: 7px;
+
+            background: #e7f2e6;
+            color: #174d32;
+
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* DATE */
+        .feedback-date {
+            color: #68776b;
+            font-size: 13px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        /* MESSAGE */
+        .message-title {
+            color: #174d32;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 9px;
+        }
+
+        .feedback-message {
+            color: #344b39;
+            line-height: 1.8;
+            font-size: 15px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* NO FEEDBACK */
+        .empty-box {
+            background: rgba(255, 255, 255, 0.96);
+            padding: 45px 20px;
+            border-radius: 12px;
+            text-align: center;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+        .empty-box h3 {
+            color: #174d32;
+            font-size: 23px;
+            margin-bottom: 12px;
+        }
+
+        .empty-box p {
+            color: #68776b;
+            line-height: 1.7;
+        }
+
+        /* BACK BUTTON */
+        .back-area {
+            text-align: center;
+            margin: 35px 0;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #174d32;
+            color: white;
+
+            padding: 13px 25px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #246b45;
+            transform: translateY(-2px);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #174d32;
+            color: white;
+            text-align: center;
+            padding: 18px 12px;
+            margin-top: 40px;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* TABLET */
+        @media (max-width: 768px) {
+            .container {
+                margin: 28px auto;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .feedback-grid {
+                grid-template-columns: repeat(
+                    auto-fit,
+                    minmax(250px, 1fr)
+                );
+                gap: 16px;
+            }
+
+            body {
+                background-attachment: scroll;
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 12px 3%;
+                gap: 8px;
+            }
+
+            .logo {
+                font-size: 12px;
+                max-width: 72%;
+                line-height: 1.5;
+            }
+
+            .nav-btn {
+                padding: 9px 10px;
+                font-size: 12px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 25px auto;
+            }
+
+            .page-title {
+                font-size: 25px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 22px;
+            }
+
+            .count-box {
+                padding: 15px;
+                font-size: 15px;
+            }
+
+            .count-number {
+                font-size: 22px;
+            }
+
+            .feedback-grid {
+                grid-template-columns: 1fr;
+                gap: 17px;
+            }
+
+            .feedback-card {
+                padding: 18px;
+            }
+
+            .customer-name {
+                font-size: 16px;
+            }
+
+            .feedback-message {
+                font-size: 14px;
+            }
+
+            .back-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            footer {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- STICKY NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+        </div>
+
+        <a href="{% url 'adminhome' %}" class="nav-btn">
+            Dashboard
+        </a>
+
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+
+        <h1 class="page-title">Customer Feedback</h1>
+
+        <p class="subtitle">
+            Read feedback shared by customers about our plants and services.
+        </p>
+
+        <!-- FEEDBACK COUNT -->
+        <div class="count-box">
+            Total Feedback:
+            <span class="count-number">
+                {{ feedbacks|length }}
+            </span>
+        </div>
+
+        <!-- DISPLAY FEEDBACK -->
+        {% if feedbacks %}
+
+            <div class="feedback-grid">
+
+                {% for feedback in feedbacks %}
+
+                    <div class="feedback-card">
+
+                        <!-- CUSTOMER INFORMATION -->
+                        <div class="customer-info">
+
+                            <div class="avatar">
+                                {{ feedback.user.name|first|upper }}
+                            </div>
+
+                            <div>
+                                <div class="customer-name">
+                                    {{ feedback.user.name }}
+                                </div>
+
+                                <div class="customer-email">
+                                    {{ feedback.user.email }}
+                                </div>
+
+                                <span class="customer-label">
+                                    Customer
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <!-- FEEDBACK DATE -->
+                        <div class="feedback-date">
+                            <strong>Submitted on:</strong>
+                            {{ feedback.created_at|date:"d-m-Y h:i A" }}
+                        </div>
+
+                        <!-- FEEDBACK MESSAGE -->
+                        <div class="message-title">
+                            Feedback Message
+                        </div>
+
+                        <p class="feedback-message">{{ feedback.message }}</p>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-box">
+
+                <div class="empty-icon">🌿</div>
+
+                <h3>No Feedback Yet</h3>
+
+                <p>
+                    Customer feedback will appear here when available.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+        <!-- BACK TO DASHBOARD -->
+        <div class="back-area">
+            <a href="{% url 'adminhome' %}" class="back-btn">
+                &#8592; Back to Dashboard
+            </a>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        &copy; 2026 Plant Nursery and Gardening Management System
+        <br>
+        Growing Green, Living Better 🌱
+    </footer>
+
+</body>
+</html>

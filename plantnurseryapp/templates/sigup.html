@@ -1,0 +1,125 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sign Up | PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="signup-page">
+
+    <!-- Signup Box -->
+    <div class="signup-box">
+
+        <!-- Logo -->
+        <div class="signup-logo">
+            🌿
+        </div>
+
+        <!-- Heading -->
+        <h1>Create Account</h1>
+
+        <p class="subtitle">
+            Join PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+        </p>
+
+        <!-- Success Message -->
+        {% if messages %}
+            {% for message in messages %}
+                <p class="signup-message signup-success">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Error Message -->
+        {% if error %}
+            <p class="signup-message signup-error">
+                {{ error }}
+            </p>
+        {% endif %}
+
+        <!-- Signup Form -->
+        <form action="/SIGUP/" method="POST">
+            {% csrf_token %}
+
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name">👤 Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="NAME"
+                    placeholder="Enter your name"
+                    autocomplete="name"
+                    required
+                >
+            </div>
+
+            <!-- Address -->
+            <div class="form-group">
+                <label for="address">🏠 Address</label>
+                <input
+                    type="text"
+                    id="address"
+                    name="ADDRESS"
+                    placeholder="Enter your address"
+                    autocomplete="street-address"
+                    required
+                >
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">📧 Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="EMAIL"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">🔒 Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="PASSWORD"
+                    placeholder="Enter your password"
+                    autocomplete="new-password"
+                    required
+                >
+            </div>
+
+            <!-- Signup Button -->
+            <button type="submit" class="signup-btn">
+                🌱 SIGN UP
+            </button>
+
+        </form>
+
+        <!-- Login Link -->
+        <div class="signup-login">
+            Already have an account?
+            <a href="/LOGIN/">Login</a>
+        </div>
+
+        <!-- Home Link -->
+        <div class="signup-home">
+            <a href="/">← Back to Home</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

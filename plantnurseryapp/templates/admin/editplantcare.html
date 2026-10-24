@@ -1,0 +1,128 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Plant Care Tips</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="edit-plant-care-page">
+
+    <div class="edit-plant-care-container">
+
+        <div class="edit-plant-care-header">
+            <span class="edit-plant-care-icon">🌿</span>
+            <h1>Edit Plant Care Tips</h1>
+            <p>Update your plant care information below.</p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="edit-plant-care-field">
+                <label for="plant_name">Plant Name</label>
+                <input
+                    type="text"
+                    id="plant_name"
+                    name="plant_name"
+                    value="{{ plant.plant_name }}"
+                    placeholder="Enter plant name"
+                    required
+                >
+            </div>
+
+            <div class="edit-plant-care-field">
+                <label>Current Plant Image</label>
+
+                <div class="edit-plant-care-current-image">
+                    {% if plant.image %}
+                        <img
+                            src="{{ plant.image.url }}"
+                            alt="Current plant image"
+                        >
+                    {% else %}
+                        <p>No image available.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="edit-plant-care-field">
+                <label for="image">Change Image (Optional)</label>
+                <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                >
+                <small>Choose a new image only if you want to change it.</small>
+            </div>
+
+            <div class="edit-plant-care-field">
+                <label for="watering">Watering</label>
+                <textarea
+                    id="watering"
+                    name="watering"
+                    required
+                >{{ plant.watering }}</textarea>
+            </div>
+
+            <div class="edit-plant-care-field">
+                <label for="sunlight">Sunlight</label>
+                <textarea
+                    id="sunlight"
+                    name="sunlight"
+                    required
+                >{{ plant.sunlight }}</textarea>
+            </div>
+
+            <div class="edit-plant-care-field">
+                <label for="soil">Soil</label>
+                <textarea
+                    id="soil"
+                    name="soil"
+                    required
+                >{{ plant.soil }}</textarea>
+            </div>
+
+            <div class="edit-plant-care-field">
+                <label for="fertilizer">Fertilizer</label>
+                <textarea
+                    id="fertilizer"
+                    name="fertilizer"
+                    required
+                >{{ plant.fertilizer }}</textarea>
+            </div>
+
+            <div class="edit-plant-care-field">
+                <label for="growing_tips">Growing Tips</label>
+                <textarea
+                    id="growing_tips"
+                    name="growing_tips"
+                    required
+                >{{ plant.growing_tips }}</textarea>
+            </div>
+
+            <div class="edit-plant-care-buttons">
+                <button type="submit">
+                    Update Plant Tips
+                </button>
+
+                <a href="/viewplantcare/" class="edit-plant-care-back">
+                    Back to Plant Tips
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

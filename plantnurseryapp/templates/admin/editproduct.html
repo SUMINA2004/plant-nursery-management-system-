@@ -1,0 +1,105 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Product | PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="edit-product-page">
+
+    <div class="edit-form-box">
+
+        <h1>🌿 Edit Product</h1>
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <input type="hidden" name="id" value="{{ product.id }}">
+
+            <label for="product_name">Product Name</label>
+            <input
+                type="text"
+                id="product_name"
+                name="product_name"
+                value="{{ product.product_name }}"
+                required
+            >
+
+            <label for="price">Price (₹)</label>
+            <input
+                type="number"
+                id="price"
+                name="price"
+                value="{{ product.price }}"
+                min="0"
+                step="0.01"
+                required
+            >
+
+            <label for="qty">Quantity</label>
+            <input
+                type="number"
+                id="qty"
+                name="qty"
+                value="{{ product.quantity }}"
+                min="0"
+                required
+            >
+
+            <label for="describtion">Description</label>
+            <textarea
+                id="describtion"
+                name="describtion"
+                rows="4"
+                required
+            >{{ product.describtion }}</textarea>
+
+            <label>Current Image</label>
+
+            {% if product.image %}
+                <img
+                    src="{{ product.image.url }}"
+                    alt="Current product image"
+                    class="current-product-image"
+                >
+            {% else %}
+                <p class="no-image-message">
+                    No image available
+                </p>
+            {% endif %}
+
+            <label for="image">Choose New Image (optional)</label>
+            <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+            >
+
+            <button type="submit" class="save-btn">
+                💾 Save Changes
+            </button>
+
+        </form>
+
+        <a href="{% url 'viewproducts' %}" class="cancel-link">
+            ← Cancel and Go Back
+        </a>
+
+    </div>
+
+</body>
+
+</html>

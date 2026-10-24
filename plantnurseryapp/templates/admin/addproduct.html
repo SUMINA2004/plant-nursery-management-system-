@@ -1,0 +1,308 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Product | PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=25">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body.add-product-page {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f7f0;
+            color: #26382a;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+        .add-product-page .navbar {
+            width: 100%;
+            min-height: 75px;
+            background: #174d32;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 15px 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .add-product-page .navbar h3 {
+            color: #d8bd70;
+            font-size: clamp(11px, 1.7vw, 20px);
+            margin: 0;
+            white-space: nowrap;
+            flex-shrink: 1;
+        }
+
+        .add-product-page .navbar div {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        .add-product-page .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .add-product-page .navbar a:hover {
+            color: #d8bd70;
+        }
+
+        /* FORM CONTAINER */
+        .add-product-page .form-container {
+            width: 90%;
+            max-width: 600px;
+            margin: 35px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(23, 77, 50, 0.12);
+        }
+
+        .add-product-page .form-container h1 {
+            text-align: center;
+            color: #174d32;
+            margin: 0 0 10px;
+            font-size: 30px;
+        }
+
+        .add-product-page .subtitle {
+            text-align: center;
+            color: #6b796c;
+            margin-bottom: 25px;
+        }
+
+        .add-product-page form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .add-product-page label {
+            margin: 13px 0 7px;
+            font-weight: bold;
+            color: #174d32;
+        }
+
+        .add-product-page input,
+        .add-product-page textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd8cb;
+            border-radius: 7px;
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+            background: #fff;
+        }
+
+        .add-product-page input:focus,
+        .add-product-page textarea:focus {
+            outline: none;
+            border-color: #287447;
+            box-shadow: 0 0 5px rgba(40, 116, 71, 0.2);
+        }
+
+        .add-product-page textarea {
+            resize: vertical;
+        }
+
+        .add-product-page input[type="file"] {
+            padding: 9px;
+            background: #f8fbf7;
+        }
+
+        .add-product-page .submit-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #174d32;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-product-page .submit-btn:hover {
+            background: #236b43;
+        }
+
+        .add-product-page .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #174d32;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .add-product-page .back-link:hover {
+            color: #a17e22;
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 600px) {
+            .add-product-page .navbar {
+                padding: 12px 8px;
+                gap: 8px;
+                min-height: 60px;
+            }
+
+            .add-product-page .navbar h3 {
+                font-size: clamp(7px, 2.1vw, 12px);
+                letter-spacing: -0.3px;
+            }
+
+            .add-product-page .navbar div {
+                gap: 8px;
+            }
+
+            .add-product-page .navbar a {
+                font-size: 10px;
+            }
+
+            .add-product-page .form-container {
+                width: 94%;
+                margin: 22px auto;
+                padding: 20px 15px;
+            }
+
+            .add-product-page .form-container h1 {
+                font-size: 25px;
+            }
+
+            .add-product-page .subtitle {
+                font-size: 14px;
+            }
+
+            .add-product-page label {
+                font-size: 14px;
+            }
+
+            .add-product-page input,
+            .add-product-page textarea {
+                font-size: 14px;
+                padding: 11px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .add-product-page .navbar {
+                padding-left: 5px;
+                padding-right: 5px;
+                gap: 5px;
+            }
+
+            .add-product-page .navbar h3 {
+                font-size: 7px;
+            }
+
+            .add-product-page .navbar div {
+                gap: 5px;
+            }
+
+            .add-product-page .navbar a {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body class="add-product-page">
+
+    <nav class="navbar">
+        <h3>🌿 PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</h3>
+
+        <div>
+            <a href="/adminhome/">Home</a>
+            <a href="/viewproducts/">View Products</a>
+            <a href="/logout/">Logout</a>
+        </div>
+    </nav>
+
+    <div class="form-container">
+
+        <h1>Add Product</h1>
+        <p class="subtitle">Enter your nursery product details</p>
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="product_name">Product Name</label>
+            <input
+                type="text"
+                id="product_name"
+                name="PRODUCT NAME"
+                placeholder="Enter product name"
+                required
+            >
+
+            <label for="price">Price (₹)</label>
+            <input
+                type="number"
+                id="price"
+                name="PRICE"
+                placeholder="Enter price"
+                min="0"
+                step="0.01"
+                required
+            >
+
+            <label for="quantity">Quantity</label>
+            <input
+                type="number"
+                id="quantity"
+                name="QTY"
+                min="0"
+                value="0"
+                required
+            >
+
+            <label for="description">Description</label>
+            <textarea
+                id="description"
+                name="DESCRIBTION"
+                rows="4"
+                placeholder="Enter product description"
+                required
+            ></textarea>
+
+            <label for="product_image">Product Image</label>
+            <input
+                type="file"
+                id="product_image"
+                name="product_image"
+                accept="image/*"
+                required
+            >
+
+            <button type="submit" class="submit-btn">
+                Add Product
+            </button>
+        </form>
+
+        <a href="/viewproducts/" class="back-link">
+            ← View All Products
+        </a>
+
+    </div>
+
+</body>
+</html>

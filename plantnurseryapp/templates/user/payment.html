@@ -1,0 +1,331 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment | Plant Nursery and Gardening Management System</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=5">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 25px 12px;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            position: relative;
+            isolation: isolate;
+            background: transparent;
+            color: #26352b;
+        }
+
+        /* BLURRED PLANT BACKGROUND */
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: -8px;
+            z-index: -1;
+            background-image:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.30),
+                    rgba(0, 0, 0, 0.30)
+                ),
+                url("https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1920&q=80");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(4px);
+        }
+
+        /* PAYMENT BOX */
+
+        .payment-box {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+            overflow-wrap: anywhere;
+        }
+
+        .payment-box h1 {
+            color: #245c38;
+            font-size: 24px;
+            line-height: 1.5;
+            text-align: center;
+            margin: 0 0 18px;
+        }
+
+        .payment-box h2 {
+            color: #245c38;
+            font-size: 25px;
+            text-align: center;
+            margin: 0 0 25px;
+        }
+
+        .payment-box h3 {
+            color: #245c38;
+            font-size: 19px;
+            margin: 22px 0 15px;
+        }
+
+        /* ERROR MESSAGE */
+
+        .error {
+            padding: 12px;
+            border-radius: 8px;
+            background: #fff0f0;
+            color: #b42318;
+            margin-bottom: 15px;
+        }
+
+        /* ORDER SUMMARY */
+
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 13px 0;
+            border-bottom: 1px solid #e0e9df;
+            font-size: 15px;
+        }
+
+        .order-row span:first-child {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .order-row span:last-child {
+            color: #245c38;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 20px;
+            padding: 17px 0;
+            border-top: 2px solid #dce8dc;
+            color: #16803a;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* PAYMENT METHODS */
+
+        .method {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #f7fbf5;
+            border: 1px solid #d7e4d5;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .method:hover {
+            background: #eff8ed;
+            border-color: #39804b;
+        }
+
+        .method input {
+            accent-color: #287343;
+            flex-shrink: 0;
+        }
+
+        /* PAY BUTTON */
+
+        .pay-button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 9px;
+            background: #287343;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .pay-button:hover {
+            background: #1d5933;
+        }
+
+        /* BACK TO CART */
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 22px;
+            color: #287343;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* TABLET */
+
+        @media (max-width: 650px) {
+            body::before {
+                filter: blur(3px);
+            }
+
+            .payment-box {
+                max-width: 500px;
+                padding: 23px 18px;
+                margin: 10px auto;
+            }
+
+            .payment-box h1 {
+                font-size: 20px;
+            }
+
+            .payment-box h2 {
+                font-size: 23px;
+            }
+
+            .payment-box h3 {
+                font-size: 18px;
+            }
+        }
+
+        /* SMALL MOBILE */
+
+        @media (max-width: 380px) {
+            body {
+                padding: 12px 7px;
+            }
+
+            .payment-box {
+                padding: 20px 13px;
+                border-radius: 11px;
+            }
+
+            .payment-box h1 {
+                font-size: 17px;
+            }
+
+            .payment-box h2 {
+                font-size: 21px;
+            }
+
+            .order-row {
+                font-size: 13px;
+                gap: 8px;
+            }
+
+            .total {
+                font-size: 19px;
+            }
+
+            .method {
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+
+            .pay-button {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="payment-box">
+
+        <h1>🌿 PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</h1>
+
+        <h2>Secure Checkout</h2>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <h3>Order Summary</h3>
+
+        {% for item in cart_items %}
+            <div class="order-row">
+                <span>
+                    {{ item.product.product_name }} × {{ item.quantity }}
+                </span>
+
+                <span>₹{{ item.total_price }}</span>
+            </div>
+        {% empty %}
+            <p>Your cart is empty.</p>
+        {% endfor %}
+
+        <div class="total">
+            <span>Total:</span>
+            <span>₹{{ total }}</span>
+        </div>
+
+        <form method="post" action="{% url 'checkout' %}">
+            {% csrf_token %}
+
+            <h3>Select Payment Method</h3>
+
+            <label class="method">
+                <input
+                    type="radio"
+                    name="payment_method"
+                    value="UPI"
+                    required
+                >
+                📱 UPI
+            </label>
+
+            <label class="method">
+                <input
+                    type="radio"
+                    name="payment_method"
+                    value="Card"
+                >
+                💳 Debit / Credit Card
+            </label>
+
+            <label class="method">
+                <input
+                    type="radio"
+                    name="payment_method"
+                    value="Net Banking"
+                >
+                🏦 Net Banking
+            </label>
+
+            <button type="submit" class="pay-button">
+                Pay ₹{{ total }}
+            </button>
+        </form>
+
+        <a href="{% url 'cart' %}" class="back-link">
+            ← Back to Cart
+        </a>
+
+    </div>
+
+</body>
+</html>

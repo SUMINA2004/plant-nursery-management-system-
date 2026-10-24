@@ -1,0 +1,30 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Email Verification | PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="message-box">
+
+        <h2>🌿 PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</h2>
+
+        <p>{{ message }}</p>
+
+        <a href="{% url 'LOGIN' %}">
+            Go to Login
+        </a>
+
+    </div>
+
+</body>
+</html>

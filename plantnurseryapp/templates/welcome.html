@@ -1,0 +1,518 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            width: 100%;
+            min-height: 62px;
+            padding: 12px 18px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #174d32;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+        }
+
+        /* GOLDEN PROJECT TITLE */
+        .navbar .logo {
+            color: #d8bd70;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        /* MENU BUTTON */
+        .dropdown {
+            position: relative;
+            flex: 0 0 auto;
+            margin-left: auto;
+        }
+
+        .dropdown-button {
+            display: block;
+            border: none;
+            border-radius: 7px;
+            padding: 10px 13px;
+            background: #ffffff;
+            color: #174d32;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .dropdown-button:hover {
+            background: #e4f2e8;
+        }
+
+        /* DROPDOWN MENU */
+        .nav-links {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            left: auto;
+            min-width: 180px;
+            max-width: calc(100vw - 16px);
+            background: #ffffff;
+            border-radius: 9px;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 10000;
+        }
+
+        .dropdown.open .nav-links {
+            display: block;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 12px 16px;
+            color: #174d32;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: #e7f4e9;
+        }
+
+        /* TABLET AND MOBILE NAVBAR */
+        @media (max-width: 768px) {
+            .navbar {
+                min-height: 54px;
+                padding: 10px 10px;
+                gap: 7px;
+            }
+
+            .navbar .logo {
+                font-size: clamp(7px, 2.1vw, 12px);
+                letter-spacing: 0;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .dropdown-button {
+                padding: 9px 8px;
+                font-size: 11px;
+            }
+
+            .nav-links {
+                min-width: 160px;
+            }
+
+            html {
+                scroll-padding-top: 65px;
+            }
+        }
+
+        /* VERY SMALL PHONES */
+        @media (max-width: 360px) {
+            .navbar {
+                padding: 8px 6px;
+                gap: 4px;
+            }
+
+            .navbar .logo {
+                font-size: 7px;
+            }
+
+            .dropdown-button {
+                padding: 8px 6px;
+                font-size: 10px;
+            }
+        }
+
+        /* RESPONSIVE FOOTER */
+        footer {
+            width: 100%;
+            padding: 18px 10px;
+            background: #174d32;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 480px) {
+            footer {
+                padding: 12px 6px;
+            }
+
+            footer p {
+                font-size: 9px;
+                line-height: 1.4;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="#home" class="logo">
+            🌿 PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+        </a>
+
+        <div class="dropdown" id="navbarDropdown">
+            <button
+                type="button"
+                class="dropdown-button"
+                id="dropdownButton"
+                aria-expanded="false"
+                aria-controls="navLinks">
+                ☰ Menu ▼
+            </button>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#home">Home</a>
+                <a href="#plants">Plants</a>
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="#reviews">Reviews</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="eyebrow">
+                WELCOME TO PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+            </span>
+
+            <h1>
+                Bring Nature Home with
+                <span>Beautiful Plants</span>
+            </h1>
+
+            <p>
+                Discover beautiful plants, fresh greenery and gardening
+                essentials to make your home more peaceful and beautiful.
+            </p>
+
+            <a href="/SIGUP/" class="btn-light">
+                Explore Our Plants ↗
+            </a>
+        </div>
+    </section>
+
+    <!-- BENEFITS SECTION -->
+    <section id="benefits">
+        <div class="section-heading">
+            <span class="eyebrow">WHY CHOOSE US</span>
+            <h2>Growing Happiness, Naturally</h2>
+            <p>Everything you need to create your own green space.</p>
+        </div>
+
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="icon">🌱</div>
+                <h3>Healthy Plants</h3>
+                <p>Find beautiful plants selected to bring greenery into your home.</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="icon">🚚</div>
+                <h3>Easy Shopping</h3>
+                <p>Browse our products and choose your favourite plants easily.</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="icon">🌿</div>
+                <h3>Gardening Support</h3>
+                <p>Discover helpful products and ideas for your gardening journey.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLANTS SECTION -->
+    <section class="plants" id="plants">
+        <div class="section-heading">
+            <span class="eyebrow">OUR COLLECTION</span>
+            <h2>Popular Plants</h2>
+            <p>Add natural beauty to your home and garden.</p>
+        </div>
+
+        <div class="plants-grid">
+            <div class="plant-card">
+                <img
+                    src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80"
+                    alt="Green indoor plant">
+                <div class="plant-info">
+                    <h3>Indoor Plants</h3>
+                    <p>Beautiful greenery for your living spaces.</p>
+                </div>
+            </div>
+
+            <div class="plant-card">
+                <img
+                    src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=800&q=80"
+                    alt="Colourful flowers">
+                <div class="plant-info">
+                    <h3>Flowering Plants</h3>
+                    <p>Add colour and freshness to your garden.</p>
+                </div>
+            </div>
+
+            <div class="plant-card">
+                <img
+                    src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=800&q=80"
+                    alt="Garden plants">
+                <div class="plant-info">
+                    <h3>Garden Plants</h3>
+                    <p>Create a beautiful and relaxing garden.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="plants-action">
+            <a href="/SIGUP/" class="btn">Start Shopping ↗</a>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services">
+        <div class="section-heading">
+            <span class="eyebrow">WHAT WE OFFER</span>
+            <h2>Our Services</h2>
+            <p>Helping you enjoy a greener lifestyle.</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🪴</div>
+                <h3>Plant Collection</h3>
+                <p>Explore different plants for your home, balcony and garden.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🌼</div>
+                <h3>Garden Essentials</h3>
+                <p>Discover useful products for everyday gardening needs.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🌳</div>
+                <h3>Green Living</h3>
+                <p>Bring nature closer to your everyday life with greenery.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about" id="about">
+        <div class="about-content">
+            <img
+                src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1000&q=80"
+                alt="Gardening and plant care">
+
+            <div class="about-text">
+                <span class="eyebrow">
+                    ABOUT PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+                </span>
+
+                <h2>Helping You Grow a Greener World</h2>
+
+                <p>
+                    PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM is a
+                    plant nursery shopping website created for people
+                    who love plants and gardening.
+                </p>
+
+                <p>
+                    Our goal is to help customers explore plants and
+                    gardening products in a simple and convenient way.
+                </p>
+
+                <a href="/SIGUP/" class="btn">JOIN NOW ↗</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CUSTOMER REVIEWS -->
+    <section id="reviews">
+        <div class="section-heading">
+            <span class="eyebrow">CUSTOMER FEEDBACK</span>
+            <h2>What Our Customers Say</h2>
+            <p>Real feedback shared by our customers.</p>
+        </div>
+
+        <div class="reviews-grid">
+            {% for review in reviews %}
+                <div class="review-card">
+                    <div class="stars">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= review.rating %}
+                                ★
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <p>"{{ review.message }}"</p>
+                    <h4>{{ review.user.name }}</h4>
+
+                    <small>
+                        {{ review.created_at|date:"d M Y" }}
+                    </small>
+                </div>
+            {% empty %}
+                <p class="empty-reviews">No customer reviews yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact" id="contact">
+        <span class="eyebrow">GET IN TOUCH</span>
+
+        <h2>
+            Ready to Grow Something
+            <span>Beautiful?</span>
+        </h2>
+
+        <p>
+            Have questions about our plants or gardening products?
+            Contact us and start your green journey with
+            PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM.
+        </p>
+
+        <div class="contact-details">
+            <a href="mailto:plant@gmail.com" class="contact-item">
+                <span>📧</span>
+                <div>
+                    <h3>Email Us</h3>
+                    <p>plant@gmail.com</p>
+                </div>
+            </a>
+
+            <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-item">
+                <span>📸</span>
+                <div>
+                    <h3>Instagram</h3>
+                    <p>Follow us on Instagram</p>
+                </div>
+            </a>
+
+            <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-item">
+                <span>👍</span>
+                <div>
+                    <h3>Facebook</h3>
+                    <p>Visit our Facebook page</p>
+                </div>
+            </a>
+
+            <a
+                href="https://x.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-item">
+                <span>🐦</span>
+                <div>
+                    <h3>Twitter / X</h3>
+                    <p>Connect with us</p>
+                </div>
+            </a>
+        </div>
+
+        <a href="/SIGUP/" class="btn-light">Get Started Today ↗</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>
+            © 2026 | PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM.
+            All rights reserved.
+        </p>
+    </footer>
+
+    <!-- NAVBAR DROPDOWN JAVASCRIPT -->
+    <script>
+        const dropdown = document.getElementById("navbarDropdown");
+        const dropdownButton = document.getElementById("dropdownButton");
+        const navLinks = document.getElementById("navLinks");
+
+        dropdownButton.addEventListener("click", function (event) {
+            event.stopPropagation();
+
+            const isOpen = dropdown.classList.toggle("open");
+            dropdownButton.setAttribute("aria-expanded", isOpen);
+        });
+
+        navLinks.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+                dropdown.classList.remove("open");
+                dropdownButton.setAttribute("aria-expanded", "false");
+            });
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!dropdown.contains(event.target)) {
+                dropdown.classList.remove("open");
+                dropdownButton.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                dropdown.classList.remove("open");
+                dropdownButton.setAttribute("aria-expanded", "false");
+                dropdownButton.focus();
+            }
+        });
+    </script>
+
+</body>
+</html>

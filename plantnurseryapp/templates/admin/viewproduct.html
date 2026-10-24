@@ -1,0 +1,555 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Products | Plant Nursery and Gardening Management System</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=24">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body.view-products-page {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #26382a;
+            background-color: #edf5ed;
+            background-image:
+                linear-gradient(
+                    rgba(240, 248, 240, 0.82),
+                    rgba(240, 248, 240, 0.82)
+                ),
+                url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1920&q=85");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* NAVBAR - SAME STYLE AS ADMIN HOME */
+        body.view-products-page .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            width: 100%;
+            min-height: 62px;
+            padding: 12px 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #174d32;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+        }
+
+        body.view-products-page .navbar .logo {
+            display: flex;
+            align-items: center;
+            flex: 1 1 auto;
+            min-width: 0;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            color: #d8bd70;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        body.view-products-page .logo-icon {
+            flex: 0 0 auto;
+            font-size: 20px;
+        }
+
+        body.view-products-page .logo-title {
+            display: block;
+            min-width: 0;
+            white-space: nowrap;
+        }
+
+        /* NAV LINKS */
+        body.view-products-page .nav-links {
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        body.view-products-page .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 13px;
+            border-radius: 7px;
+            background: #ffffff;
+            color: #174d32;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        body.view-products-page .nav-links a:hover {
+            background: #e4f2e8;
+            transform: translateY(-1px);
+        }
+
+        /* PAGE HEADING */
+        body.view-products-page .heading {
+            width: 92%;
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 28px 15px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #e0eadd;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        body.view-products-page .heading h1 {
+            margin: 0 0 10px;
+            color: #1b5e20;
+            font-size: 30px;
+        }
+
+        body.view-products-page .heading p {
+            margin: 0;
+            color: #435746;
+            line-height: 1.7;
+        }
+
+        /* TABLE CONTAINER */
+        body.view-products-page .table-container {
+            width: 92%;
+            max-width: 1400px;
+            margin: 25px auto 40px;
+            overflow-x: auto;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        body.view-products-page .products-table {
+            width: 100%;
+            min-width: 850px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        body.view-products-page .products-table thead {
+            background: #2e7d32;
+            color: white;
+        }
+
+        body.view-products-page .products-table th {
+            padding: 16px 12px;
+            text-align: center;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        body.view-products-page .products-table td {
+            padding: 14px 12px;
+            text-align: center;
+            border-bottom: 1px solid #e1ebe1;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        body.view-products-page .products-table tbody tr:hover {
+            background: #f1f8f1;
+        }
+
+        body.view-products-page .product-name {
+            color: #1b5e20;
+            font-weight: bold;
+        }
+
+        body.view-products-page .price {
+            color: #216e39;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        body.view-products-page .description {
+            max-width: 240px;
+            text-align: left;
+        }
+
+        body.view-products-page .quantity {
+            font-weight: bold;
+        }
+
+        /* PRODUCT IMAGE */
+        body.view-products-page .product-image {
+            display: block;
+            width: 85px;
+            height: 75px;
+            margin: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #dce9dc;
+        }
+
+        /* ACTION BUTTONS */
+        body.view-products-page .action-buttons {
+            min-width: 150px;
+        }
+
+        body.view-products-page .action-buttons form {
+            display: inline-block;
+            margin: 4px;
+        }
+
+        body.view-products-page .edit-btn,
+        body.view-products-page .delete-btn {
+            display: inline-block;
+            padding: 9px 13px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        body.view-products-page .edit-btn {
+            background: #1976d2;
+        }
+
+        body.view-products-page .edit-btn:hover {
+            background: #0d47a1;
+        }
+
+        body.view-products-page .delete-btn {
+            background: #d32f2f;
+        }
+
+        body.view-products-page .delete-btn:hover {
+            background: #a31515;
+        }
+
+        /* EMPTY MESSAGE */
+        body.view-products-page .empty-message {
+            padding: 35px 15px;
+            text-align: center;
+            color: #526357;
+            font-size: 16px;
+        }
+
+        /* FOOTER */
+        body.view-products-page footer {
+            width: 100%;
+            background: #174d32;
+            color: white;
+            text-align: center;
+            padding: 16px 12px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        body.view-products-page footer p {
+            margin: 0;
+        }
+
+        /* TABLET */
+        @media (max-width: 900px) {
+            body.view-products-page .navbar {
+                padding: 12px;
+                gap: 8px;
+            }
+
+            body.view-products-page .navbar .logo {
+                font-size: clamp(9px, 1.6vw, 13px);
+                letter-spacing: 0;
+            }
+
+            body.view-products-page .logo-icon {
+                font-size: 17px;
+            }
+
+            body.view-products-page .nav-links {
+                gap: 5px;
+            }
+
+            body.view-products-page .nav-links a {
+                padding: 9px 8px;
+                font-size: 11px;
+            }
+
+            body.view-products-page .heading h1 {
+                font-size: 26px;
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            body.view-products-page {
+                background-attachment: scroll;
+            }
+
+            body.view-products-page .navbar {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                min-height: 54px;
+                padding: 10px 8px;
+                gap: 5px;
+            }
+
+            body.view-products-page .navbar .logo {
+                display: flex;
+                flex: 1 1 auto;
+                min-width: 0;
+                width: auto;
+                font-size: clamp(7px, 2vw, 11px);
+                line-height: 1.2;
+                letter-spacing: 0;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            body.view-products-page .logo-icon {
+                flex: 0 0 auto;
+                font-size: 15px;
+            }
+
+            body.view-products-page .logo-title {
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            body.view-products-page .nav-links {
+                display: flex;
+                flex: 0 0 auto;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 4px;
+                width: auto;
+                margin-left: auto;
+            }
+
+            body.view-products-page .nav-links a {
+                padding: 8px 6px;
+                font-size: 10px;
+                border-radius: 5px;
+            }
+
+            body.view-products-page .heading {
+                width: 94%;
+                padding: 22px 12px;
+                margin: 20px auto;
+            }
+
+            body.view-products-page .heading h1 {
+                font-size: 24px;
+            }
+
+            body.view-products-page .heading p {
+                font-size: 14px;
+            }
+
+            body.view-products-page .table-container {
+                width: 94%;
+                margin: 20px auto 30px;
+            }
+
+            body.view-products-page .products-table th,
+            body.view-products-page .products-table td {
+                padding: 11px 9px;
+                font-size: 13px;
+            }
+
+            body.view-products-page footer {
+                font-size: 10px;
+            }
+        }
+
+        /* VERY SMALL PHONES */
+        @media (max-width: 380px) {
+            body.view-products-page .navbar {
+                padding: 9px 5px;
+                gap: 3px;
+            }
+
+            body.view-products-page .navbar .logo {
+                font-size: 7px;
+            }
+
+            body.view-products-page .logo-icon {
+                font-size: 12px;
+            }
+
+            body.view-products-page .nav-links {
+                gap: 3px;
+            }
+
+            body.view-products-page .nav-links a {
+                padding: 7px 4px;
+                font-size: 9px;
+            }
+
+            body.view-products-page .heading h1 {
+                font-size: 21px;
+            }
+
+            body.view-products-page .products-table {
+                min-width: 850px;
+            }
+
+            body.view-products-page footer {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body class="view-products-page">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            <span class="logo-icon">🌿</span>
+            <span class="logo-title">
+                PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+            </span>
+        </div>
+
+        <div class="nav-links">
+            <a href="/adminhome/">Home</a>
+            <a href="/addproduct/">Add Product</a>
+            <a href="/logout/">Logout</a>
+        </div>
+
+    </nav>
+
+    <!-- PAGE HEADING -->
+    <section class="heading">
+        <h1>Our Products 🌱</h1>
+        <p>Manage your plants and gardening collection</p>
+    </section>
+
+    <!-- PRODUCTS TABLE -->
+    <div class="table-container">
+
+        <table class="products-table">
+
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for x in userdata %}
+                <tr>
+                    <td class="product-name">
+                        {{ x.product_name }}
+                    </td>
+
+                    <td class="price">
+                        ₹ {{ x.price }}
+                    </td>
+
+                    <td class="description">
+                        {{ x.describtion }}
+                    </td>
+
+                    <td>
+                        {% if x.image %}
+                            <img
+                                src="{{ x.image.url }}"
+                                class="product-image"
+                                alt="{{ x.product_name }}"
+                            >
+                        {% else %}
+                            No image
+                        {% endif %}
+                    </td>
+
+                    <td class="quantity">
+                        {{ x.quantity }}
+                    </td>
+
+                    <td class="action-buttons">
+                        <a
+                            href="{% url 'editproduct' %}?id={{ x.id }}"
+                            class="edit-btn"
+                        >
+                            Edit
+                        </a>
+
+                        <form
+                            method="POST"
+                            action="{% url 'deleteproduct' %}"
+                            onsubmit="return confirm('Are you sure you want to delete this product?');"
+                        >
+                            {% csrf_token %}
+
+                            <input
+                                type="hidden"
+                                name="id"
+                                value="{{ x.id }}"
+                            >
+
+                            <button type="submit" class="delete-btn">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="empty-message">
+                        No products available yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>
+            © 2026 PLANT NURSERY AND GARDENING MANAGEMENT SYSTEM
+            | Admin Dashboard 🌿
+        </p>
+    </footer>
+
+</body>
+</html>
